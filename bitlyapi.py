@@ -1,14 +1,14 @@
-import requests
-
-headers = {
-    'Authorization': 'Bearer b502a1b1722ba710e108143556c15b78bc0b78e7',
-    'Content-Type': 'application/json',
-}
-
-data = '{ "long_url": "https://openbsd.org/", "domain": "bit.ly" }'
+import re
+from tools.url_shrinker import URLShrinker
 
 
+if __name__ == '__main__':
+    url = input('Введите ссылку: ')
+    shrinker = URLShrinker()    
 
-response = requests.post('https://api-ssl.bitly.com/v4/shorten', headers=headers, data=data)
-print(response.status_code)
-print(response.text)
+    if (shrinker.http_available(url)):
+        if (re.match('https://bit.ly/[A_Za-z0-9]+', url)):
+            print('Bitly link MATCH')
+        else:
+            short_link = shrinker.shrink_url(url)
+            print('Битлинк - %s' % short_link)
