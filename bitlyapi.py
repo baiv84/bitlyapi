@@ -1,17 +1,40 @@
+import sys
 import requests
-
-CRYPTED_TOKEN = '98:53:48:50:97:49:98:49:55:50:50:98:97:55:49:48:101:49:48:56:49:52:51:53:53:54:99:49:53:98:55:56:98:99:48:98:55:56:101:55'
-DECRYPTED_TOKEN = "".join([chr(int(c)) for c in CRYPTED_TOKEN.split(':')])
-
-print(DECRYPTED_TOKEN)
-
-headers = {
-    'Authorization': 'Bearer %s' % (DECRYPTED_TOKEN),
-    'Content-Type': 'application/json',
-}
+from tools.bitly_apy_callers import shorten_link, count_clicks, get_token_value
+from urllib.parse import urlparse
 
 
-data = '{ "long_url": "https://openwall.org/", "domain": "bit.ly" }'
-response = requests.post('https://api-ssl.bitly.com/v4/shorten', headers=headers, data=data)
-print(response.status_code)
-print(response.text)
+def is_bitlink(url):
+    """Check for bit.ly link"""
+    parsed = urlparse(url)
+    if (parsed.netloc == 'bit.ly'):
+        return True
+    return False
+
+    
+
+if __name__ == '__main__':
+    # Retrieve API token from setting file
+    token = get_token_value()
+
+    if token is not None:
+        while True:
+            user_input = input('Enter link to short (Print "exit" to stop): ')
+            if user_input == 'exit':
+                break
+
+            if is_bitlink(user_input) == True: 
+                print('we have bitlink !')
+                clicks = count_clicks(token, user_input)
+                print(clicks)
+                
+            else:
+                try:
+                    bitlink = shorten_link(token, user_input)
+                    print(bitlink)
+                except requests.exceptions.HTTPError:
+                    print('Exception occured. Abort program !')
+                    sys.exit(1)
+        
+    else:
+        print('Token error')
