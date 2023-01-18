@@ -1,4 +1,5 @@
-import requests
+import re
+from tools.url_shrinker import URLShrinker
 
 
 CRYPTED_TOKEN = '98:53:48:50:97:49:98:49:55:50:50:98:97:55:49:48:101:49:48:56:49:52:51:53:53:54:99:49:53:98:55:56:98:99:48:98:55:56:101:55'
