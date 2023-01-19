@@ -5,7 +5,7 @@ import sys
 import requests
 from dotenv import load_dotenv
 from urllib.parse import urlparse
-from tools.bitly_apy_callers import shorten_link, count_clicks
+from tools.bitly_api_callers import shorten_link, count_clicks
 
 
 def is_bitlink(url):
