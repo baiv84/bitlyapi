@@ -6,18 +6,6 @@ import requests
 from urllib.parse import urlparse
 
 
-def get_token_value(fname='.env'):
-    """Load token value from '.env' file"""
-    try:
-        with open(fname, 'r') as options:
-            token = options.readline().split('=')[1]
-            return token.lstrip().rstrip()
-    except FileNotFoundError as e:
-        print('Option file by default - .env NOT found. Abort!')
-        sys.exit(1)
-    return
-
-
 def shorten_link(token, url):
     """Make link short via bitly service API"""
     headers = {
