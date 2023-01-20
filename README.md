@@ -51,10 +51,10 @@ Next step you have to create your personal text file `.env` file in the `bitlyap
 Fill `.env` file with your personal bitly-API token:
 
 ```console
-(venv) bitlyapi $ echo 'TOKEN=xxxxxxxxxxxxx' > .env
+(venv) bitlyapi $ echo 'BITLY_TOKEN=xxxxxxxxxxxxx' > .env
 ```
 
-Instead of `TOKEN=xxxxxxxxxxxxx` initialize TOKEN value by your personal token value you got after bitly.com registration
+Instead of `BITLY_TOKEN=xxxxxxxxxxxxx` initialize BITLY_TOKEN value by your personal token value you got after bitly.com registration
 
 # Install dependencies
 
