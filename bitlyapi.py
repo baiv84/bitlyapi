@@ -1,57 +1,79 @@
-# -*- coding: utf-8 -*-
-
 import os
-import sys
+import json
 import requests
 from dotenv import load_dotenv
 from urllib.parse import urlparse
-from tools.bitly_api_callers import shorten_link, count_clicks
 
+#print(f"Hello, {name}. You are {age}.")
 
-def is_bitlink(url):
-    """Check for bit.ly link"""
+def is_bitlink(token, url):
+    """Check link for bitlink type"""
+    headers = {
+        'Authorization': f'Bearer {token}',
+    }
+
+    parsed_url = urlparse(url)
+    hostname = parsed_url.hostname
+    path = parsed_url.path.split('/')[1]
+
+    api = f'https://api-ssl.bitly.com/v4/bitlinks/{hostname}/{path}/'
+    response = requests.get(api, headers=headers)
+    response.raise_for_status()
+
+    print(response.text)
+    return True
+
+    
+def shorten_link(token, url):
+    """Make link short via bitly service API"""
+    headers = {
+        'Authorization': f'Bearer {token}',
+        'Content-Type': 'application/json',
+    }
+
+    data = {
+        'long_url': url,
+    }
+
+    api = 'https://api-ssl.bitly.com/v4/shorten'
+    response = requests.post(api, headers=headers, data=json.dumps(data))
+    response.raise_for_status()
+
+    return response.json()['link']
+    
+
+def count_clicks(token, url):
+    """Count clicks per link"""
+    headers = {
+        'Authorization': f'Bearer {token}',
+    }
+
+    params = (
+        ('unit', 'month'),
+        ('units', '-1'),
+    )
+
     parsed = urlparse(url)
-    if (parsed.netloc == 'bit.ly'):
-        return True
-    return False
+    bitlink = parsed.path.split('/')[1]
+    api = f'https://api-ssl.bitly.com/v4/bitlinks/bit.ly/{bitlink}/clicks'
+    response = requests.get(api, headers=headers, params=params)
+    response.raise_for_status()
 
+    data = response.json()
+    count_clicks = data['link_clicks'][0]['clicks']
+    return count_clicks
+    
 
 if __name__ == '__main__':
-    # Load API token
-    try:
-        load_dotenv()
-        token = os.environ['TOKEN']
-    except KeyError:
-        print('Ошибка обработки файла настроек (.env)!')
-        sys.exit(1)
+    is_bitlink('', 'https://bit.ly/3XCCSZJ')
 
-    if token is not None:
-        while True:
-            user_input = input('Введите ссылку (Для выхода введите exit): ')
-            # Exit checks
-            if user_input == 'exit':
-                break
-            # Bitlink -> start clicks counting
-            if is_bitlink(user_input) is True:
-                try:
-                    clicks = count_clicks(token, user_input)
-                    print('По вашей ссылке прошли: %s раз(а)' % (clicks))
-                except requests.exceptions.HTTPError:
-                    print('\n******************************************'
-                          '\nОшибка в HTTP-запросе. '
-                          '\nПроверьте корректность bit.ly ссылки !'
-                          '\n******************************************')
-            # Common link -> start link shorting
-            else:
-                try:
-                    bitlink = shorten_link(token, user_input)
-                    print(bitlink)
-                except requests.exceptions.HTTPError:
-                    print('\n******************************************\n'
-                          '\nОшибка в HTTP-запросе.'
-                          '\nURL-адрес должен включать префикс http (https)'
-                          '\nв начале адресной строки !'
-                          '\n\n******************************************')
-                    continue
-    else:
-        print('Ошибка API-токена')
+    # load_dotenv()
+    # bitly_token = os.environ['BITLY_TOKEN']
+    # user_input = input('Введите ссылку: ')
+
+    # if is_bitlink(user_input):
+    #     clicks = count_clicks(bitly_token, user_input)
+    #     print(f'По вашей ссылке прошли: {clicks} раз(а)')
+    # else:
+    #     bitlink = shorten_link(bitly_token, user_input)
+    #     print(bitlink)
