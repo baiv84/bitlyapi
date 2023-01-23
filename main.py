@@ -57,7 +57,7 @@ if __name__ == '__main__':
     if os.path.exists('.env'):
         load_dotenv()
         bitly_token = os.environ['BITLY_TOKEN']
-        if long_url is not None:
+        if long_url:
             user_input = long_url
         else:
             user_input = input('Введите ссылку: ')
