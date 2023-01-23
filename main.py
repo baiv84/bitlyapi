@@ -5,11 +5,11 @@ from dotenv import load_dotenv
 from urllib.parse import urlparse
 
 
-def args_parser():
-    """Parse input parameters """
-    parser = argparse.ArgumentParser()
-    parser.add_argument ('long_url', nargs='?')
-    return parser
+def get_arguments_parser():
+    """Return argument parsing object"""
+    argument_parser = argparse.ArgumentParser()
+    argument_parser.add_argument ('long_url', nargs='?')
+    return argument_parser
 
 
 def shorten_link(bitly_token, url):
@@ -50,8 +50,8 @@ def is_bitlink(bitly_token, url):
 
 
 if __name__ == '__main__':
-    parser = args_parser()
-    namespace = parser.parse_args()
+    argument_parser = get_arguments_parser()
+    namespace = argument_parser.parse_args()
     long_url = namespace.long_url
 
     if os.path.exists('.env'):
