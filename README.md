@@ -71,15 +71,15 @@ This command install `requests` and `python-dotenv` library in  the `venv` virtu
 There are 3 options to run program:
 + explicitly define URL to shorten - `option 1`
     
-    `(venv) bitlyapi $ python bitlyapi.py https://openwrt.org`
+    `(venv) bitlyapi $ python main.py https://openwrt.org`
 
 + explicitly define URL to calculate clicks number - `option 2` 
     
-    `(venv) bitlyapi $ python bitlyapi.py https://bit.ly/3J7wDc7`
+    `(venv) bitlyapi $ python main.py https://bit.ly/3J7wDc7`
 
 + run program without parameters, in this case user will enter the URL by hands - `option 3`
 
-    `(venv) bitlyapi $ python bitlyapi.py`
+    `(venv) bitlyapi $ python main.py`
 
 
 # Control results
