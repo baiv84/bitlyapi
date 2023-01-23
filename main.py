@@ -1,7 +1,15 @@
 import os
 import requests
+import argparse
 from dotenv import load_dotenv
 from urllib.parse import urlparse
+
+
+def args_parser():
+    """Parse input parameters """
+    parser = argparse.ArgumentParser()
+    parser.add_argument ('long_url', nargs='?')
+    return parser
 
 
 def shorten_link(bitly_token, url):
@@ -42,26 +50,33 @@ def is_bitlink(bitly_token, url):
 
 
 if __name__ == '__main__':
+    parser = args_parser()
+    namespace = parser.parse_args()
+    long_url = namespace.long_url
+
     if os.path.exists('.env'):
         load_dotenv()
         bitly_token = os.environ['BITLY_TOKEN']
-        user_input = input('Введите ссылку: ')
+        if long_url is not None:
+            user_input = long_url
+        else:
+            user_input = input('Введите ссылку: ')
+        
         bitly_flag = is_bitlink(bitly_token, user_input)
-
         if bitly_flag:
             try:
                 clicks_number = count_clicks(bitly_token, user_input)
                 print(f'По вашей ссылке прошли: {clicks_number} раз(а)')
             except requests.HTTPError:
                 print('Операция подсчета ссылок - '
-                      'Вы ввели неправильную ссылку !')
+                      'Вы ввели неправильную ссылку ! - 1')
         else:
             try:
                 bitlink = shorten_link(bitly_token, user_input)
                 print(f'Битлинк: {bitlink}')
             except requests.HTTPError:
                 print('Операция сжатия ссылки - '
-                      'Вы ввели неправильную ссылку !')
+                      'Вы ввели неправильную ссылку ! -2')
     else:
         print('\n*************************************************'
               '\nОтсутствует файл настроек - ".env"'

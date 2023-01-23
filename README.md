@@ -3,7 +3,7 @@
 `Bitlyapi` is the console tool to communicate with `Bitly.com` service API. 
 
 Main tool features are: 
-+ make short links from fully URL given by the user
++ make short links from fully URL given by the user (via keyboard input or console parameter)
 + make bitlinks calculations after it being clicked
 
 
@@ -68,13 +68,37 @@ This command install `requests` and `python-dotenv` library in  the `venv` virtu
 
 # Run program 
 
-    (venv) bitlyapi $ python bitlyapi.py
+There are 3 options to run program:
++ explicitly define URL to shorten - `option 1`
+    
+    `(venv) bitlyapi $ python bitlyapi.py https://openwrt.org`
+
++ explicitly define URL to calculate clicks number - `option 2` 
+    
+    `(venv) bitlyapi $ python bitlyapi.py https://bit.ly/3J7wDc7`
+
++ run program without parameters, in this case user will enter the URL by hands - `option 3`
+
+    `(venv) bitlyapi $ python bitlyapi.py`
+
 
 # Control results
 
-If program running successfully, you will see result like this:
+If program runing as `option 1`, you will see result like this:
 
 ![Alt text](img/img1.png?raw=true "Bitly output")
+
+If program runing as `option 2`, you will see result like this:
+
+![Alt text](img/img2.png?raw=true "Bitly output")
+
+If program runing as `option 3`, you will see result like this:
+
+In this case program determine the link type and run particular procedure - shorten link or calculate clicks.
+
+![Alt text](img/img3.png?raw=true "Bitly output")
+
+![Alt text](img/img4.png?raw=true "Bitly output")
 
 
 # Final steps
