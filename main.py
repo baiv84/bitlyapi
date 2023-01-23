@@ -51,8 +51,8 @@ def is_bitlink(bitly_token, url):
 
 if __name__ == '__main__':
     argument_parser = get_arguments_parser()
-    namespace = argument_parser.parse_args()
-    long_url = namespace.long_url
+    args = argument_parser.parse_args()
+    long_url = args.long_url
 
     if os.path.exists('.env'):
         load_dotenv()
