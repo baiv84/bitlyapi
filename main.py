@@ -61,7 +61,7 @@ if __name__ == '__main__':
             user_input = long_url
         else:
             user_input = input('Введите ссылку: ')
-        
+
         bitly_flag = is_bitlink(bitly_token, user_input)
         if bitly_flag:
             try:
