@@ -8,7 +8,7 @@ from urllib.parse import urlparse
 def get_arguments_parser():
     """Return argument parsing object"""
     argument_parser = argparse.ArgumentParser()
-    argument_parser.add_argument ('long_url', nargs='?')
+    argument_parser.add_argument('long_url', nargs='?')
     return argument_parser
 
 
